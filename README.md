@@ -1,6 +1,10 @@
 📦 my_first_project
 │
 ├── 📂 app
+└── 📂 Admin
+└── 📂 Widgets
+├── ProductsWidget.php  
+ └── CategoriesWidget.php
 │ ├── 📂 Console
 │ ├── 📂 Exceptions
 │ ├── 📂 Http
@@ -12,7 +16,9 @@
 │ │ ├── 📂 Middleware
 │ │ └── 📂 Requests
 │ ├── 📂 Models
-│ │ └── User.php
+├── User.php
+├── Product.php ← Должна быть
+└── Category.php ← Должна быть
 │ └── 📂 Providers
 │
 ├── 📂 config
@@ -70,6 +76,8 @@
 │ │ └── Products/ProductTest.php
 │ └── 📂 Unit
 │ └── ExampleTest.php
+── 📂 config
+└── voyager.php  
 │
 ├── .env
 ├── .env.example
