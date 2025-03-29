@@ -74,3 +74,8 @@ Auth::routes();
 Route::fallback(function () {
     return redirect()->route('pages.home');
 });
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+});

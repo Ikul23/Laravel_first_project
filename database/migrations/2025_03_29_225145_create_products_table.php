@@ -9,13 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('sku');
+            $table->string('sku')->unique();
             $table->string('name');
-            $table->decimal('price', 9, 3);
+            $table->decimal('price', 8, 2);
+            $table->foreignId('category_id')->constrained();
             $table->timestamps();
         });
     }

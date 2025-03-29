@@ -3,6 +3,7 @@
 namespace Tests\Feature\Products;
 
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -10,11 +11,6 @@ class ProductTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * Test products index endpoint.
-     *
-     * @return void
-     */
     public function test_products_can_be_indexed()
     {
         Product::factory()->count(3)->create();
@@ -25,16 +21,11 @@ class ProductTest extends TestCase
             ->assertJsonStructure([
                 'success',
                 'data' => [
-                    '*' => ['id', 'sku', 'name', 'price', 'created_at', 'updated_at']
+                    '*' => ['id', 'category_id', 'sku', 'name', 'price', 'created_at', 'updated_at']
                 ]
             ]);
     }
 
-    /**
-     * Test product show endpoint.
-     *
-     * @return void
-     */
     public function test_product_can_be_shown()
     {
         $product = Product::factory()->create();
@@ -46,6 +37,7 @@ class ProductTest extends TestCase
                 'success' => true,
                 'data' => [
                     'id' => $product->id,
+                    'category_id' => $product->category_id,
                     'sku' => $product->sku,
                     'name' => $product->name,
                     'price' => (string) $product->price
@@ -53,14 +45,12 @@ class ProductTest extends TestCase
             ]);
     }
 
-    /**
-     * Test product store endpoint.
-     *
-     * @return void
-     */
     public function test_product_can_be_stored()
     {
+        $category = Category::factory()->create();
+
         $productData = [
+            'category_id' => $category->id,
             'sku' => 'TEST001',
             'name' => 'Test Product',
             'price' => 99.99
@@ -72,25 +62,23 @@ class ProductTest extends TestCase
             ->assertJson([
                 'success' => true,
                 'data' => [
+                    'category_id' => $category->id,
                     'sku' => 'TEST001',
                     'name' => 'Test Product',
-                    'price' => '99.990'
+                    'price' => '99.99'
                 ]
             ]);
 
         $this->assertDatabaseHas('products', $productData);
     }
 
-    /**
-     * Test product update endpoint.
-     *
-     * @return void
-     */
     public function test_product_can_be_updated()
     {
         $product = Product::factory()->create();
+        $newCategory = Category::factory()->create();
 
         $updatedData = [
+            'category_id' => $newCategory->id,
             'name' => 'Updated Product Name',
             'price' => 149.99
         ];
@@ -102,23 +90,18 @@ class ProductTest extends TestCase
                 'success' => true,
                 'data' => [
                     'id' => $product->id,
+                    'category_id' => $newCategory->id,
                     'name' => 'Updated Product Name',
-                    'price' => '149.990'
+                    'price' => '149.99'
                 ]
             ]);
 
-        $this->assertDatabaseHas('products', [
-            'id' => $product->id,
-            'name' => 'Updated Product Name',
-            'price' => 149.99
-        ]);
+        $this->assertDatabaseHas('products', array_merge(
+            ['id' => $product->id],
+            $updatedData
+        ));
     }
 
-    /**
-     * Test product destroy endpoint.
-     *
-     * @return void
-     */
     public function test_product_can_be_destroyed()
     {
         $product = Product::factory()->create();
