@@ -21,13 +21,14 @@ class FormProcessor extends Controller
             'email' => 'required|email|max:255'
         ]);
 
-        // Здесь можно добавить сохранение в БД
-        // Например: User::create($validated);
 
-        return response()->json([
-            'success' => true,
-            'data' => $validated,
-            'message' => 'Form submitted successfully!'
+
+        return view('welcome_user', [
+            'user' => [
+                'first_name' => $validated['first_name'],
+                'last_name' => $validated['last_name'],
+                'email' => $validated['email']
+            ]
         ]);
     }
 }
