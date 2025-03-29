@@ -52,8 +52,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('contacts') ? 'active' : '' }}"
-                            href="{{ route('contacts') }}">
+                        <a class="nav-link {{ request()->routeIs('pages.contacts') ? 'active' : '' }}"
+                            href="{{ route('pages.contacts') }}">
                             <i class="bi bi-envelope me-1"></i> Контакты
                         </a>
                     </li>
